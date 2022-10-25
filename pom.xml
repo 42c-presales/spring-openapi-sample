@@ -4,6 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>xliic.openapi.example</groupId>
     <artifactId>openapi-demo</artifactId>
+    <name>OpenAPI-Spring-Demo</name>
+    <description>Sample App to demo OpenAPI annotations</description>
     <version>0.0.1-SNAPSHOT</version>
     <properties>
         <java.version>17</java.version>

@@ -34,9 +34,9 @@ import javax.validation.constraints.Pattern;
 @EnableAutoConfiguration
 @OpenAPIDefinition(
         info = @Info(
-                title = "Sample API",
+                title = "Spring Demo API",
                 version = "0.1",
-                description = "Test API for SpringBoot",
+                description = "Sample API for SpringBoot",
                 license = @License(name = "Apache 2.0", url = "http://open.license"),
                 contact = @Contact(url = "http://acme-server.com", name = "Support", email = "Support@acme-server.com")
         ),
@@ -49,7 +49,7 @@ import javax.validation.constraints.Pattern;
         servers = {
                 @Server(
                         description = "local server",
-                        url = "http://localhost:8080"),
+                        url = "http://localhost:8090"),
                 @Server(
                         description = "secured server",
                         url = "https://localhost:8443")
