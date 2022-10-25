@@ -51,12 +51,12 @@ import javax.validation.constraints.Pattern;
                         description = "local server",
                         url = "http://localhost:8090"),
                 @Server(
-                        description = "secured server",
-                        url = "https://localhost:8443")
+                        description = "docker host",
+                        url = "https://host.docker.internal:8090")
 
         }
 )
-@SecurityScheme(type = SecuritySchemeType.APIKEY, name = "apikey", in = SecuritySchemeIn.HEADER)
+@SecurityScheme(type = SecuritySchemeType.APIKEY, name = "apikey", in = SecuritySchemeIn.HEADER, paramName = "x-access-token")
 @SecurityScheme(type = SecuritySchemeType.OAUTH2, name = "oauth2", flows = @OAuthFlows(
         clientCredentials =
                 @OAuthFlow(tokenUrl = "http://acme.com/token",
@@ -111,7 +111,7 @@ public class UserMgtApp {
                     @ApiResponse(responseCode = "400", description = "login failed",content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ErrorResponse.class)))})
     @PutMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @SecurityRequirement(name = "oauth2", scopes = {"write"})
+    @SecurityRequirement(name = "apikey", scopes = {})
     public User updateUser (@RequestBody final User user) {
         return userService.updateUser(user);
     }
