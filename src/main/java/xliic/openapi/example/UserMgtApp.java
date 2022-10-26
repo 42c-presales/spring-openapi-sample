@@ -12,18 +12,17 @@ import io.swagger.v3.oas.annotations.info.License;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.*;
 import io.swagger.v3.oas.annotations.servers.Server;
 import org.springdoc.core.customizers.OpenApiCustomiser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
@@ -52,7 +51,7 @@ import javax.validation.constraints.Pattern;
                         url = "http://localhost:8090"),
                 @Server(
                         description = "docker host",
-                        url = "https://host.docker.internal:8090")
+                        url = "http://host.docker.internal:8090")
 
         }
 )
@@ -72,6 +71,7 @@ public class UserMgtApp {
         SpringApplication.run(UserMgtApp.class, args);
     }
 
+    // Add additionalProperties=false to all schemas.
     @Bean
     public OpenApiCustomiser openApiCustomiser() {
         return openApi -> openApi.getComponents().getSchemas().values().forEach( s -> s.setAdditionalProperties(false));
@@ -98,9 +98,9 @@ public class UserMgtApp {
                     @ApiResponse(responseCode = "404", description = "Not Found",content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ErrorResponse.class)))})
 
-    @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/user/{id}")
     @SecurityRequirement(name = "oauth2", scopes = {"read"})
-    public User getUser (@PathVariable(name = "id") @Schema(minLength = 36, maxLength = 36, pattern = Constants.UUID) String id) {
+    public User getUser (@PathVariable(name = "id") @Min (36) @Max (36) @Pattern(regexp = Constants.UUID) @Valid String id) {
         return userService.getUser(id);
     }
 
@@ -110,8 +110,9 @@ public class UserMgtApp {
                             schema = @Schema(implementation = User.class))),
                     @ApiResponse(responseCode = "400", description = "login failed",content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ErrorResponse.class)))})
-    @PutMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/user", consumes = MediaType.APPLICATION_JSON_VALUE)
     @SecurityRequirement(name = "apikey", scopes = {})
+    @Validated (User.class)
     public User updateUser (@RequestBody final User user) {
         return userService.updateUser(user);
     }

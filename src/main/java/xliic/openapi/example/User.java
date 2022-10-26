@@ -11,28 +11,32 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@Valid
+@Validated
 public class User {
 
     @NotNull
-    @Schema(required = true, nullable = false, format = "email")
+    @Schema(required = true)
     private String email;
+
     @Size(min = 5, max = 100)
     @Schema(required = true)
     @Pattern(regexp = Constants.SIMPLE_STRING)
     @NotNull
     @Valid
     private String name;
+    
     @Schema(required = true, format = "password")
     private String password;
 
     @Schema(description = "vip-level", allowableValues =  {"gold","silver","bronze"})
+    @Valid
     private String vipLevel;
 
-    public User(String email, String name, String password) {
+    public User(String email, String name, String password, String vipLevel) {
         this.email = email;
         this.name = name;
         this.password = password;
+        this.vipLevel = vipLevel;
     }
 
     public void setEmail(String email) {
