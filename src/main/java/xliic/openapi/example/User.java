@@ -1,9 +1,7 @@
 package xliic.openapi.example;
 
-import io.swagger.v3.oas.annotations.media.ExampleObject;
+//import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.context.annotation.Bean;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -15,9 +13,11 @@ import javax.validation.constraints.Size;
 public class User {
 
     @NotNull
+    //@Schema(required = true, format="email") - Removed format for demo purpose
     @Schema(required = true)
     private String email;
 
+    // Constraints can be configured through various annotations.
     @Size(min = 5, max = 100)
     @Schema(required = true)
     @Pattern(regexp = Constants.SIMPLE_STRING)
@@ -25,9 +25,11 @@ public class User {
     @Valid
     private String name;
     
+    // Here we only specify the format, which will be then resolved through 42C Data Dictionary.
     @Schema(required = true, format = "password")
     private String password;
 
+    // Illustrate how to specify an enum value.
     @Schema(description = "vip-level", allowableValues =  {"gold","silver","bronze"})
     @Valid
     private String vipLevel;

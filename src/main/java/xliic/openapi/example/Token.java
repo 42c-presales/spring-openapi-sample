@@ -1,7 +1,5 @@
 package xliic.openapi.example;
 
-import org.springframework.context.annotation.Description;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
