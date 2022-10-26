@@ -1,3 +1,4 @@
+# Remove the --platform option if you're building on Intel platform.
 FROM --platform=linux/amd64 openjdk:17-jdk-alpine
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
