@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.*;
 import io.swagger.v3.oas.annotations.servers.Server;
@@ -26,6 +27,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 
 @RestController
@@ -115,5 +117,25 @@ public class UserMgtApp {
     @Validated (User.class)
     public User updateUser (@RequestBody final User user) {
         return userService.updateUser(user);
+    }
+
+    @Operation(
+            summary = "Get a list of users",
+            description = "Get a list of users registered in the system",
+            responses = {@ApiResponse(
+                    responseCode = "200",
+                    description = "The response for the users request",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = User.class), maxItems = 10, minItems = 0, uniqueItems = true)
+                            )
+                    })
+            }
+    )
+    @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "apikey", scopes = {})
+    public List<User> getUsers() {
+        return null;
     }
 }

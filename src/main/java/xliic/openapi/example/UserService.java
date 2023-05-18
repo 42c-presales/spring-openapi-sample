@@ -8,6 +8,6 @@ public class UserService {
     User updateUser (User newUser) {return null;}
 
     public User getUser(String id) {
-        return new User("foo@bar.com", "Foo Bar", "NotGivingYouMyPassword", "bronze");
+        return new User("foo@bar.com", "Foo Bar", "NotGivingYouMyPassword", "bronze", new String [] {"Account1","Account2"} );
     }
 }

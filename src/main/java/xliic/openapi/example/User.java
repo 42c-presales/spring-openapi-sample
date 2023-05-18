@@ -24,6 +24,11 @@ public class User {
     @NotNull
     @Valid
     private String name;
+
+    @Size(min = 1, max = 3)
+    @NotNull
+    @Valid
+    private String[] spendingLimits;
     
     // Here we only specify the format, which will be then resolved through 42C Data Dictionary.
     @Schema(required = true, format = "password")
@@ -34,11 +39,17 @@ public class User {
     @Valid
     private String vipLevel;
 
-    public User(String email, String name, String password, String vipLevel) {
+    @Size(min = 1, max = 10)
+    @NotNull
+    @Valid
+    private String[] accountIDs;
+
+    public User(String email, String name, String password, String vipLevel, String [] accountIDs) {
         this.email = email;
         this.name = name;
         this.password = password;
         this.vipLevel = vipLevel;
+        this.accountIDs = accountIDs;
     }
 
     public void setEmail(String email) {
@@ -71,5 +82,13 @@ public class User {
 
     public void setVipLevel(String vipLevel) {
         this.vipLevel = vipLevel;
+    }
+
+    public String[] getAccountIDs() {
+        return accountIDs;
+    }
+
+    public void setAccountIDs(String[] accountIDs) {
+        this.accountIDs = accountIDs;
     }
 }
